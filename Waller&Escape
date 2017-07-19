@@ -1,0 +1,8 @@
+//Casts Wall that can be placed anywhere. If you hit key again, it plants it directly behind you.
+//Perfect for blocking dexxers from chasing you through narrow alleys.
+if not targetexists
+  cleartargetqueue
+  cast "Wall of Stone"
+else
+  targettilerelative 'self' '-1'
+endif(edited)
