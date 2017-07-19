@@ -1,0 +1,351 @@
+// GW Book checker v1.2. Will recall through the runes and check signs within 8 tiles.  Once the runenook is complete it will give a list of all of the runes that are IDOC.  It will now check if houses have been refreshed or if the sign is out of range.  Will now restart where it left off if macro is stopped.
+@unsetalias 'GWBook'
+headmsg 'Please Select the Greatly Worn Book to be checked' '2124'
+if counttype 0xf7b 'any' 'backpack' < 20
+  headmsg 'Please make sure you have at least 20 of each recall reg and restart the macro' 22
+  stop
+endif
+if counttype 0xf86 'any' 'backpack' < 20
+  headmsg 'Please make sure you have at least 20 of each recall reg and restart the macro' 22
+  stop
+endif
+if counttype 0xf7a 'any' 'backpack' < 20
+  headmsg 'Please make sure you have at least 20 of each recall reg and restart the macro' 22
+  stop
+endif
+if not findalias 'GWBook'
+  promptalias 'GWBook'
+endif
+//
+if not findalias 'GWBook'
+  headmsg 'You must select a book to check.  Please restart.'
+  stop
+endif
+if not listexists 'IDOC'
+  createlist 'IDOC'
+endif
+if not listexists 'recall_buttons'
+  createlist 'recall_buttons'
+  pushlist 'recall_buttons' 5
+  pushlist 'recall_buttons' 11
+  pushlist 'recall_buttons' 17
+  pushlist 'recall_buttons' 23
+  pushlist 'recall_buttons' 29
+  pushlist 'recall_buttons' 35
+  pushlist 'recall_buttons' 41
+  pushlist 'recall_buttons' 47
+  pushlist 'recall_buttons' 53
+  pushlist 'recall_buttons' 59
+  pushlist 'recall_buttons' 65
+  pushlist 'recall_buttons' 71
+  pushlist 'recall_buttons' 77
+  pushlist 'recall_buttons' 83
+  pushlist 'recall_buttons' 89
+  pushlist 'recall_buttons' 95
+  createlist 'runecounter'
+  pushlist 'runecounter' 1
+  pushlist 'runecounter' 2
+  pushlist 'runecounter' 3
+  pushlist 'runecounter' 4
+  pushlist 'runecounter' 5
+  pushlist 'runecounter' 6
+  pushlist 'runecounter' 7
+  pushlist 'runecounter' 8
+  pushlist 'runecounter' 9
+  pushlist 'runecounter' 10
+  pushlist 'runecounter' 11
+  pushlist 'runecounter' 12
+  pushlist 'runecounter' 13
+  pushlist 'runecounter' 14
+  pushlist 'runecounter' 15
+  pushlist 'runecounter' 16
+endif
+clickobject 'GWBook'
+useobject 'GWBook'
+while list 'recall_buttons' > 0
+  @clearlist 'SignFound'
+  clearjournal
+  if mana < 20
+    useskill 'meditation'
+    while mana < 22
+    endwhile
+  endif
+  if @injournal 'The world is' 'system'
+    clearjournal
+    sysmsg 'Pausing macro for Server Save'
+    waitforjournal 'World save complete' 35000 'system'
+    sysmsg 'Resuming macro'
+  endif
+  clickobject 'GWBook'
+  useobject 'GWBook'
+  waitforgump 0x554b87f3 3000
+  replygump 0x554b87f3 'recall_buttons[0]'
+  headmsg 'using rune'
+  headmsg 'runecounter[0]'
+  pause 2000
+  if @injournal 'fizzle' 'system'
+    sysmsg 'your spell fizzled please restart' 23
+    stop
+  endif
+  if @injournal 'disturbed' 'system'
+    headmsg 'you were hit.. get safe and restart'
+    stop
+  endif
+  @clearignorelist
+  @clearlist 'SignTypes'
+  @clearlist 'SignTypes'
+  if not listexists 'SignFound'
+    @createlist 'SignFound'
+  endif
+  if not listexists 'SignTypes'
+    @createlist 'SignTypes'
+  endif
+  @pushlist! 'SignTypes' 0xba4
+  @pushlist! 'SignTypes' 0xba6
+  @pushlist! 'SignTypes' 0xba8
+  @pushlist! 'SignTypes' 0xbaa
+  @pushlist! 'SignTypes' 0xbac
+  @pushlist! 'SignTypes' 0xbc0
+  @pushlist! 'SignTypes' 0xbae
+  @pushlist! 'SignTypes' 0xbb0
+  @pushlist! 'SignTypes' 0xbb2
+  @pushlist! 'SignTypes' 0xbb4
+  @pushlist! 'SignTypes' 0xbb6
+  @pushlist! 'SignTypes' 0xbb8
+  @pushlist! 'SignTypes' 0xbba
+  @pushlist! 'SignTypes' 0xbbc
+  @pushlist! 'SignTypes' 0xbbe
+  @pushlist! 'SignTypes' 0xbbe
+  @pushlist! 'SignTypes' 0xbc2
+  @pushlist! 'SignTypes' 0xbc4
+  @pushlist! 'SignTypes' 0xbc0
+  @pushlist! 'SignTypes' 0xbc6
+  @pushlist! 'SignTypes' 0xbc8
+  @pushlist! 'SignTypes' 0xbca
+  @pushlist! 'SignTypes' 0xbcc
+  @pushlist! 'SignTypes' 0xbce
+  @pushlist! 'SignTypes' 0xbd0
+  @pushlist! 'SignTypes' 0xbd2
+  @pushlist! 'SignTypes' 0xbd4
+  @pushlist! 'SignTypes' 0xbd6
+  @pushlist! 'SignTypes' 0xbd8
+  @pushlist! 'SignTypes' 0xbda
+  @pushlist! 'SignTypes' 0xbdc
+  @pushlist! 'SignTypes' 0xbde
+  @pushlist! 'SignTypes' 0xbe0
+  @pushlist! 'SignTypes' 0xbe2
+  @pushlist! 'SignTypes' 0xbe4
+  @pushlist! 'SignTypes' 0xbdc
+  @pushlist! 'SignTypes' 0xbe8
+  @pushlist! 'SignTypes' 0xbea
+  @pushlist! 'SignTypes' 0xbec
+  @pushlist! 'SignTypes' 0xbee
+  @pushlist! 'SignTypes' 0xbf0
+  @pushlist! 'SignTypes' 0xbf2
+  @pushlist! 'SignTypes' 0xbf4
+  @pushlist! 'SignTypes' 0xbf6
+  @pushlist! 'SignTypes' 0xbf8
+  @pushlist! 'SignTypes' 0xbfa
+  @pushlist! 'SignTypes' 0xbfc
+  @pushlist! 'SignTypes' 0xbfe
+  @pushlist! 'SignTypes' 0xc00
+  @pushlist! 'SignTypes' 0xc02
+  @pushlist! 'SignTypes' 0xc04
+  @pushlist! 'SignTypes' 0xc06
+  @pushlist! 'SignTypes' 0xc08
+  @pushlist! 'SignTypes' 0xc0a
+  @pushlist! 'SignTypes' 0xc0c
+  @pushlist! 'SignTypes' 0xc0e
+  @pushlist! 'SignTypes' 0xc44
+  @pushlist! 'SignTypes' 0xb95
+  for 0 to 'SignTypes'
+    if @findtype 'SignTypes[]' 'any' 'ground' 'any' 8
+      if @setalias 'sign' 'found'
+        @clearjournal system
+        clickobject 'sign'
+        pushlist 'SignFound' 'Yes'
+        waitforjournal 'This house is' 3000 'system'
+        if not @injournal 'This house is greatly worn.' 'system' and not @injournal 'This house is in danger of collapsing.' 'system'
+          headmsg 'It appears a house has been refreshed please remove rune and restart macro' '33'
+          stop
+        endif
+      endif
+      if @injournal 'This house is in danger of collapsing.' system
+        if @injournal 'This house is greatly worn.' system
+          headmsg '***Ambiguous - Check Manually***' 96 'self'
+          headmsg '***Ambiguous - Check Manually***' 96 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        elseif @injournal 'This house is fairly worn.' system
+          headmsg '***Ambiguous - Check Manually***' 96 'self'
+          headmsg '***Ambiguous - Check Manually***' 96 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        elseif @injournal 'This house is somewhat worn.' system
+          headmsg '***Ambiguous - Check Manually***' 96 'self'
+          headmsg '***Ambiguous - Check Manually***' 96 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        elseif @injournal 'This house is slightly worn.' system
+          headmsg '***Ambiguous - Check Manually***' 96 'self'
+          headmsg '***Ambiguous - Check Manually***' 96 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        elseif @injournal 'This house is ageless.' system
+          headmsg '***Ambiguous - Check Manually***' 96 'self'
+          headmsg '***Ambiguous - Check Manually***' 96 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        else
+          headmsg 'IDOC FOUND!' '33'
+          headmsg 'IDOC FOUND!' '33' 'sign'
+          pushlist 'IDOC' 'runecounter[0]' 'front'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        endif
+      elseif @injournal 'This house is greatly worn.' system
+        if @injournal 'This house is in danger of collapsing.' system
+          headmsg '***Ambiguous - Check Manually***' 96 'self'
+          headmsg '***Ambiguous - Check Manually***' 96 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        elseif @injournal 'This house is fairly worn.' system
+          headmsg '***Ambiguous - Check Manually***' 96 'self'
+          headmsg '***Ambiguous - Check Manually***' 96 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        elseif @injournal 'This house is somewhat worn.' system
+          headmsg '***Ambiguous - Check Manually***' 96 'self'
+          headmsg '***Ambiguous - Check Manually***' 96 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        elseif @injournal 'This house is slightly worn.' system
+          headmsg '***Ambiguous - Check Manually***' 96 'self'
+          headmsg '***Ambiguous - Check Manually***' 96 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        elseif @injournal 'This house is ageless.' system
+          headmsg '***Ambiguous - Check Manually***' 96 'self'
+          headmsg '***Ambiguous - Check Manually***' 96 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        else
+          headmsg '***Greatly Worn***' '45'
+          headmsg '***Greatly Worn***' '45' 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        endif
+      elseif @injournal 'This house is fairly worn.' system
+        if @injournal 'This house is greatly worn.' system
+          headmsg '***Ambiguous - Check Manually***' 96 'self'
+          headmsg '***Ambiguous - Check Manually***' 96 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        elseif @injournal 'This house is in danger of collapsing.' system
+          headmsg '***Ambiguous - Check Manually***' 96 'self'
+          headmsg '***Ambiguous - Check Manually***' 96 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        elseif @injournal 'This house is somewhat worn.' system
+          headmsg '***Ambiguous - Check Manually***' 96 'self'
+          headmsg '***Ambiguous - Check Manually***' 96 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        elseif @injournal 'This house is slightly worn.' system
+          headmsg '***Ambiguous - Check Manually***' 96 'self'
+          headmsg '***Ambiguous - Check Manually***' 96 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        elseif @injournal 'This house is ageless.' system
+          headmsg '***Ambiguous - Check Manually***' 96 'self'
+          headmsg '***Ambiguous - Check Manually***' 96 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        else
+          headmsg '***FAIRLY WORN***' '50'
+          headmsg '***FAIRLY WORN***' '50' 'sign'
+          if @inrange 'sign' 4
+            @ignoreobject 'found'
+          endif
+          break
+        endif
+      elseif @injournal 'This house is somewhat worn.' system
+        headmsg '***Somewhat Worn***' '70' 'sign'
+        @ignoreobject 'found'
+        break
+      elseif @injournal 'This house is slightly worn.' system
+        headmsg '***Slightly Worn***' '70' 'sign'
+        @ignoreobject 'found'
+        break
+      elseif @injournal 'This house is like new.' system
+        headmsg '***Like New***' '70' 'sign'
+        @ignoreobject 'found'
+        break
+      elseif @injournal 'This house is ageless.' system
+        headmsg '***Ageless***' '70' 'sign'
+        @ignoreobject 'found'
+        break
+      endif
+    endif
+  endfor
+  if list 'SignFound' < 1
+    headmsg 'No sign found.  Please fix rune and restart.'
+    stop
+  endif
+  pause 50
+  pause 3000
+  poplist 'runecounter' front
+  poplist 'recall_buttons' front
+endwhile
+if list 'IDOC' < 1
+  headmsg 'Check complete no IDOCS found, Please return the book'
+endif
+if list 'IDOC' > 0
+  headmsg 'Check complete please remove runes' '2124'
+  for 0 to 'IDOC'
+    headmsg IDOC[] '2124'
+  endfor
+  headmsg 'in THAT ORDER and place in the appropriate book' '2124'
+endif
+@clearlist 'runecounter'
+@removelist 'runecounter'
+@clearlist 'IDOC'
+@removelist 'IDOC'
+@clearlist 'recall_buttons'
+@removelist 'recall_buttons'
+@clearlist 'SignFound'
+@removelist 'SignFound'
