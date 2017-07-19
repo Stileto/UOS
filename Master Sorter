@@ -1,0 +1,469 @@
+// Created by Stileto of UOF
+//Can be used on Tmap chests, MIBs, or any container sorting.
+//This IDs and sorts any container into 5 other containers, StufftoSell, StufftoKeep, Gems, Regs, Trash
+//It keeps certain scrolls such as Rez, EV, Quake, Meteor, Gate, Mark, Recall, Reflect, Blades and stores them with regs. Edit to your needs.
+// !!*** Init Data ***!!
+@clearjournal
+unsetalias 'bagtosort'
+unsetalias 'stufftosell'
+unsetalias 'stufftokeep'
+unsetalias 'gem_storage'
+unsetalias 'reg_storage'
+unsetalias 'trash'
+// !! user Input
+if not @findobject 'bagtosort'
+  headmsg 'Select From Bag' '2124'
+  promptalias 'bagtosort'
+endif
+pause 700
+// !! user Input
+if not @findobject 'stufftosell'
+  headmsg 'Select Junk Bag' '38'
+  promptalias 'stufftosell'
+endif
+pause 700
+// !! user Input
+if not @findobject 'stufftokeep'
+  headmsg 'Select Keeper Bag' '58'
+  promptalias 'stufftokeep'
+endif
+pause 700
+//
+// !! user Input
+if not @findobject 'gem_storage'
+  headmsg 'Select Gem Storage' '58'
+  promptalias 'gem_storage'
+endif
+pause 700
+// !! user Input
+if not @findobject 'reg_storage'
+  headmsg 'Select Reg Storage' '58'
+  promptalias 'reg_storage'
+endif
+pause 700
+//
+// !! user Input
+if not @findobject 'trash'
+  headmsg 'Select Trash' '38'
+  promptalias 'trash'
+endif
+pause 700
+// !! Static Data
+if not listexists 'ItemTypes'
+  createlist 'ItemTypes'
+endif
+if not listexists 'Trash'
+  createlist 'Trash'
+endif
+if not listexists 'gems'
+  createlist 'gems'
+endif
+if not listexists 'regs'
+  createlist 'regs'
+endif
+useobject 'bagtosort'
+useobject 'stufftosell'
+useobject 'stufftokeep'
+useobject 'gem_storage'
+useobject 'reg_storage'
+useobject 'Trash'
+clearlist 'ItemTypes'
+clearlist 'regs'
+clearlist 'gems'
+clearlist 'Trash'
+//Shields
+@pushlist 'ItemTypes' 0x1b72 //BronzeShields
+@pushlist 'ItemTypes' 0x1b73 //Buckler
+@pushlist 'ItemTypes' 0x1b7b //MetalShield
+@pushlist 'ItemTypes' 0x1b74 //Metal Kite Shield
+@pushlist 'ItemTypes' 0x1b79 //Tear Kite Shield
+@pushlist 'ItemTypes' 0x1b7a //WoodenShield
+@pushlist 'ItemTypes' 0x1b76 //HeaterShield
+//Platemail
+@pushlist 'ItemTypes' 0x1408 //Close Helmet
+@pushlist 'ItemTypes' 0x1410 //Platemail Arms
+@pushlist 'ItemTypes' 0x1411 //Platemail Legs
+@pushlist 'ItemTypes' 0x1412 //Plate Helm
+@pushlist 'ItemTypes' 0x1413 //Plate Gorget
+@pushlist 'ItemTypes' 0x1414 //Platemail Gloves
+@pushlist 'ItemTypes' 0x1415 //Plate Chest
+@pushlist 'ItemTypes' 0x140a //Helmet
+@pushlist 'ItemTypes' 0x140c //Bascinet
+@pushlist 'ItemTypes' 0x140e //Norse Helm
+//Chainmail
+@pushlist 'ItemTypes' 0x13bb //Chainmail Coif
+@pushlist 'ItemTypes' 0x13be //Chainmail Leggins
+@pushlist 'ItemTypes' 0x13bf //Chainmail Tunic
+//Ringmail
+@pushlist 'ItemTypes' 0x13ee //Ringmail Sleeves
+@pushlist 'ItemTypes' 0x13eb //Ringmail Gloves
+@pushlist 'ItemTypes' 0x13ec //Ringmail Tunic
+@pushlist 'ItemTypes' 0x13f0 //Ringmail Leggins
+//Studded
+@pushlist 'ItemTypes' 0x13da //Studded Leggings
+@pushlist 'ItemTypes' 0x13db //Studded Tunic
+@pushlist 'ItemTypes' 0x13d5 //Studded Gloves
+@pushlist 'ItemTypes' 0x13d6 //Studded Gorget
+@pushlist 'ItemTypes' 0x13dc //Studded Sleeves
+//Leather
+@pushlist 'ItemTypes' 0x13c6 //Leather Gloves
+@pushlist 'ItemTypes' 0x13cd //Leather Sleeves
+@pushlist 'ItemTypes' 0x13cc //Leather Tunic
+@pushlist 'ItemTypes' 0x13cb //Leather Pants
+@pushlist 'ItemTypes' 0x13c7 //Leather Gorget
+@pushlist 'ItemTypes' 0x1db9 //Leather Cap
+//Female Armor
+@pushlist 'ItemTypes' 0x1c04 //Female Plate
+@pushlist 'ItemTypes' 0x1c0c //Female Studded Bustier
+@pushlist 'ItemTypes' 0x1c02 //Female Studded Armor
+@pushlist 'ItemTypes' 0x1c00 //Female Leather Shorts
+@pushlist 'ItemTypes' 0x1c08 //Female Leather Skirt
+@pushlist 'ItemTypes' 0x1c06 //Female Leather Armor
+@pushlist 'ItemTypes' 0x1c0a //Female Leather Bustier
+//Fencing
+@pushlist 'ItemTypes' 0xf62 //Spear
+@pushlist 'ItemTypes' 0x1403 //Short Spear
+@pushlist 'ItemTypes' 0xe87 //Pitchfork
+@pushlist 'ItemTypes' 0x1405 //Warfork
+@pushlist 'ItemTypes' 0x1401 //Kryss
+@pushlist 'ItemTypes' 0xf52 //Dagger
+//Macing
+@pushlist 'ItemTypes' 0x13b0 //War axe
+@pushlist 'ItemTypes' 0xdf0 //Black Staff
+@pushlist 'ItemTypes' 0x1439 //War Hammer
+@pushlist 'ItemTypes' 0x1407 //War Mace
+@pushlist 'ItemTypes' 0xe89 //Quarter Staff
+@pushlist 'ItemTypes' 0x143d //Hammer Pick
+@pushlist 'ItemTypes' 0x13b4 //Club
+@pushlist 'ItemTypes' 0xe81 //Shepherds Crook
+@pushlist 'ItemTypes' 0x13f8 //Gnarled Staff
+@pushlist 'ItemTypes' 0xf5c //Mace
+@pushlist 'ItemTypes' 0x143b //Maul
+//Swords
+@pushlist 'ItemTypes' 0x13b9 //Viking Sword
+@pushlist 'ItemTypes' 0xf61 //Longsword
+@pushlist 'ItemTypes' 0x1441 //Cutlass
+@pushlist 'ItemTypes' 0x13b6 //Scimitar
+@pushlist 'ItemTypes' 0xec4 //Skinning Knife
+@pushlist 'ItemTypes' 0x13f6 //Butcher Knife
+@pushlist 'ItemTypes' 0xf5e //Broadsword
+@pushlist 'ItemTypes' 0x13ff //Katana
+@pushlist 'ItemTypes' 0xec3 //Cleaver
+//Axes
+@pushlist 'ItemTypes' 0xf43 //Hatchet
+@pushlist 'ItemTypes' 0xf45 //Executioner's Axe
+@pushlist 'ItemTypes' 0xf4d //Bardiche
+@pushlist 'ItemTypes' 0xf4b //Double Axe
+@pushlist 'ItemTypes' 0x143e //Halberd
+@pushlist 'ItemTypes' 0x13fb //Large Battle Axe
+@pushlist 'ItemTypes' 0x1443 //Two Handed Axe
+@pushlist 'ItemTypes' 0xf47 //Battle Axe
+@pushlist 'ItemTypes' 0xf49 //Axe
+@pushlist 'ItemTypes' 0xe85 //Pickaxe
+@pushlist 'ItemTypes' 0xe86 //Pickaxe
+//Bows
+@pushlist 'ItemTypes' 0x13fd //HeavyXbow
+@pushlist 'ItemTypes' 0xf50 //Xbow
+@pushlist 'ItemTypes' 0x13b2 //bow
+// Spell Scrolls
+@pushlist 'Trash' 0x1f2d // Reactive Armor
+@pushlist 'Trash' 0x1f2e // Clumsy
+@pushlist 'Trash' 0x1f2f // Create Food
+@pushlist 'Trash' 0x1f30 // Feeblemind
+@pushlist 'Trash' 0x1f31 // Heal
+@pushlist 'Trash' 0x1f32 // Magic Arrow
+@pushlist 'Trash' 0x1f33 // Night Sight
+@pushlist 'Trash' 0x1f34 // Weaken
+@pushlist 'Trash' 0x1f35 // Agility
+@pushlist 'Trash' 0x1f36 // Cunning
+@pushlist 'Trash' 0x1f37 // Cure
+@pushlist 'Trash' 0x1f38 // Harm
+@pushlist 'Trash' 0x1f39 // Magic Trap
+@pushlist 'Trash' 0x1f3a // Magic Untrap
+@pushlist 'Trash' 0x1f3b // Protection
+@pushlist 'Trash' 0x1f3c // Strength
+@pushlist 'Trash' 0x1f3d // Bless
+@pushlist 'Trash' 0x1f3e // Fireball
+@pushlist 'Trash' 0x1f3f // Magic Lock
+@pushlist 'Trash' 0x1f40 // Poison
+@pushlist 'Trash' 0x1f41 // Telekinesis
+@pushlist 'Trash' 0x1f42 // Teleport
+@pushlist 'Trash' 0x1f43 // Unlock
+@pushlist 'Trash' 0x1f44 // Wall of Stone
+@pushlist 'Trash' 0x1f45 // Arch Cure
+@pushlist 'Trash' 0x1f46 // Arch Protection
+@pushlist 'Trash' 0x1f47 // Curse
+@pushlist 'Trash' 0x1f48 // Fire Field
+@pushlist 'Trash' 0x1f49 // Greater Heal
+@pushlist 'Trash' 0x1f4a // Lightning
+@pushlist 'Trash' 0x1f4b // Mana Drain
+@pushlist 'Trash' 0x1f4e // Dispel Field
+@pushlist 'Trash' 0x1f4f // Incognito
+@pushlist 'Trash' 0x1f51 // Mind Blast
+@pushlist 'Trash' 0x1f52 // Paralyze
+@pushlist 'Trash' 0x1f53 // Poison Field
+@pushlist 'Trash' 0x1f54 // Summon Creature
+@pushlist 'Trash' 0x1f55 // Dispel
+@pushlist 'Trash' 0x1f56 // Energy Bolt
+@pushlist 'Trash' 0x1f57 // Explosion
+@pushlist 'Trash' 0x1f58 // Invisibility
+@pushlist 'Trash' 0x1f5a // Mass Curse
+@pushlist 'Trash' 0x1f5b // Paralyze Field
+@pushlist 'Trash' 0x1f5c // Reveal
+@pushlist 'Trash' 0x1f5d // Chain Lightning
+@pushlist 'Trash' 0x1f5e // Energy Field
+@pushlist 'Trash' 0x1f5f // Flamestrike
+@pushlist 'Trash' 0x1f61 // Mana Vampire
+@pushlist 'Trash' 0x1f62 // Mass Dispel
+@pushlist 'Trash' 0x1f64 // Polymorph
+@pushlist 'Trash' 0x1f68 // Summon Air Elemental
+@pushlist 'Trash' 0x1f6a // Summon Earth Elemental
+@pushlist 'Trash' 0x1f6b // Summon Fire Elemental
+@pushlist 'Trash' 0x1f6c // Summon Water Elemental
+// Cloth hats
+@pushlist 'Trash' 0x1544
+@pushlist 'Trash' 0x1540
+@pushlist 'Trash' 0x1713
+@pushlist 'Trash' 0x1715
+@pushlist 'Trash' 0x1714
+@pushlist 'Trash' 0x1716
+@pushlist 'Trash' 0x1717
+@pushlist 'Trash' 0x1718
+@pushlist 'Trash' 0x1719
+@pushlist 'Trash' 0x171a
+@pushlist 'Trash' 0x171b
+@pushlist 'Trash' 0x171c
+@pushlist 'Trash' 0x2306
+//Bone Armor
+@pushlist 'Trash' 0x1f0b //Orc Helmet
+@pushlist 'Trash' 0x1451 //Bone Helmet
+@pushlist 'Trash' 0x144f //Bone Armor
+@pushlist 'Trash' 0x1452 //Bone Leggings
+@pushlist 'Trash' 0x144e //Bone Arms
+@pushlist 'Trash' 0x1450 //Bone Gloves
+//gems
+@pushlist 'gems' 0xf16 // Amethyst
+@pushlist 'gems' 0xf15 // Citrine
+@pushlist 'gems' 0xf19 // Sapphire
+@pushlist 'gems' 0xf25 // Amber
+@pushlist 'gems' 0xf21 // Star Sapphire
+@pushlist 'gems' 0xf10 // Emerald
+@pushlist 'gems' 0xf26 // Diamond
+@pushlist 'gems' 0xf2d // Tourmaline
+@pushlist 'gems' 0xf13 // Ruby
+//regs
+@pushlist 'regs' 0xeed // Gold
+@pushlist 'regs' 0xdca // Net
+@pushlist 'regs' 0xf7a  // Black Pearl
+@pushlist 'regs' 0xf7b  // Blood Moss
+@pushlist 'regs' 0xf86  // Mandrake Root
+@pushlist 'regs' 0xf84  // Garlic
+@pushlist 'regs' 0xf85  // Ginseng
+@pushlist 'regs' 0xf88  // Nightshade
+@pushlist 'regs' 0xf8d  // Spider's Silk
+@pushlist 'regs' 0xf8c  // Sulphurous Ash
+@pushlist 'regs' 0x1f69 // Summon Daemon
+@pushlist 'regs' 0x1f67 // Ressurrection
+@pushlist 'regs' 0x1f66 // Energy Vortex
+@pushlist 'regs' 0x1f65 // Earthquake
+@pushlist 'regs' 0x1f63 // Meteor Swarm
+@pushlist 'regs' 0x1f60 // Gate Travel
+@pushlist 'regs' 0x1f59 // Mark
+@pushlist 'regs' 0x1f4c // Recall
+@pushlist 'regs' 0x1f50 // Magic Reflection
+@pushlist 'regs' 0x1f4d // Blade Spirit
+// !!*** End of Data Init ***!!
+//
+//
+//
+// !! cycle all items listed in var ItemTypes
+for 0 to 'ItemTypes'
+  // !! Process all items found of current cycled ItemType
+  while @findtype 'ItemTypes[]' 'any' 'bagtosort'
+    @clearjournal
+    moveitem found 'stufftosell'
+    // !! Id the item using Item ID Skill
+    pause 1500
+    useskill 'Item Identification'
+    waitfortarget 15000
+    target! found
+    pause 1500
+    //
+    // !!*** Item to do conditionals ***!!
+    // !!*** If any of these conditions are true
+    // !!*** The Item is a keeper , (Sure wish we
+    // !!*** Could use switchs bleh )
+    // !!*****************************************!!
+    if @injournal 'Silver' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Silver' '2213'
+      @clearjournal
+    elseif @injournal 'Vanquishing' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Vanquishing' '2213'
+      @clearjournal
+    elseif @injournal 'Power' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Power' '2213'
+      @clearjournal
+    elseif @injournal 'Exorcism' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Exorcisim' '2213'
+      @clearjournal
+    elseif @injournal 'Air' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Air' '2213'
+      @clearjournal
+    elseif @injournal 'Daemon' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Daemon' '2213'
+      @clearjournal
+    elseif @injournal 'Gargoyle' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Gargoyle' '2213'
+      @clearjournal
+    elseif @injournal 'Fey' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Fey' '2213'
+      @clearjournal
+    elseif @injournal 'Respond' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Respond' '2213'
+      @clearjournal
+    elseif @injournal 'Repond' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Repond' '2213'
+      @clearjournal
+    elseif @injournal 'Vacuum' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Vacuum' '2213'
+      @clearjournal
+    elseif @injournal 'Flame' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Flame' '2213'
+      @clearjournal
+    elseif @injournal 'Elemental' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Elemental' '2213'
+      @clearjournal
+    elseif @injournal 'Earth' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Earth' '2213'
+      @clearjournal
+    elseif @injournal 'Water' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Water' '2213'
+      @clearjournal
+    elseif @injournal 'Ogre' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Ogre' '2213'
+      @clearjournal
+    elseif @injournal 'Orc' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Orc' '2213'
+      @clearjournal
+    elseif @injournal 'Arachnid' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Arachnid' '2213'
+      @clearjournal
+    elseif @injournal 'Spider' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Spider' '2213'
+      @clearjournal
+    elseif @injournal 'Scorpion' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Scorpion' '2213'
+      @clearjournal
+    elseif @injournal 'Terathan' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Terathan' '2213'
+      @clearjournal
+    elseif @injournal 'Reptile' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Reptile' '2213'
+      @clearjournal
+    elseif @injournal 'Dragon' 'system'
+      headmsg 'Dragon' '2213'
+      moveitem found 'stufftokeep'
+      @clearjournal
+    elseif @injournal 'Lizardman' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Lizardman' '2213'
+      @clearjournal
+    elseif @injournal 'Ophidian' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Ophidan' '2213'
+      @clearjournal
+    elseif @injournal 'Snake' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Snake' '2213'
+      @clearjournal
+    elseif @injournal 'Undead' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Undead' '2213'
+      @clearjournal
+    elseif @injournal 'Blood' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Blood' '2213'
+      @clearjournal
+    elseif @injournal 'Poison' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Poison' '2213'
+      @clearjournal
+    elseif @injournal 'Troll' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Troll' '2213'
+      @clearjournal
+    elseif @injournal 'Fire' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Fire' '2213'
+      @clearjournal
+    elseif @injournal 'Snow' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Snow' '2213'
+      @clearjournal
+    elseif @injournal 'Demon' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Demon' '2213'
+      @clearjournal
+    elseif @injournal 'Balron' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Balron' '2213'
+      @clearjournal
+      //
+    elseif @injournal 'Invulnerability' 'system'
+      moveitem found 'stufftokeep'
+      headmsg 'Invulnerability' '2213'
+      @clearjournal
+    endif
+    @clearjournal
+  endwhile
+endfor
+// !! cycle all items listed in var gems
+for 0 to 'gems'
+  // !! Process all items found of current cycled gems
+  while @findtype 'gems[]' 'any' 'bagtosort'
+    @clearjournal
+    moveitem found 'gem_storage'
+  endwhile
+endfor
+// !! cycle all items listed in var regs
+for 0 to 'regs'
+  // !! Process all items found of current cycled regs
+  while @findtype 'regs[]' 'any' 'bagtosort'
+    @clearjournal
+    moveitem found 'reg_storage'
+  endwhile
+endfor
+// !! cycle all items listed in var trash
+for 0 to 'Trash'
+  // !! Process all items found of current cycled Trash
+  while @findtype 'Trash[]' 'any' 'bagtosort'
+    @clearjournal
+    moveitem found 'trash'
+  endwhile
+endfor
+clearignorelist
+msg '[e whistle'
+headmsg 'All Done' '2124'
+stop
