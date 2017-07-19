@@ -1,0 +1,11 @@
+//Cast gate, grab loot, then hit key, even works in TOWN!
+if @findtype 0xf6c 'any' 'ground' 1 2
+  sysmsg 'Moongate found, lets go!' 80
+  useobject! 'found'
+  if @inregion 'guards'
+    waitforgump 3716879466 2000
+    replygump 3716879466 1
+  endif
+else
+  sysmsg 'Moongate not found, come closer.' 24
+endif
