@@ -1,5 +1,5 @@
 // Created by Stileto of UOF
-//Can be used on Tmap chests, MIBs, or any container sorting.
+//Can be used on Tmap chests, MIBs, or any container sorting. Requires skill Item Identification.
 //This IDs and sorts any container into 5 other containers, StufftoSell, StufftoKeep, Gems, Regs, Trash
 //It keeps certain scrolls such as Rez, EV, Quake, Meteor, Gate, Mark, Recall, Reflect, Blades and stores them with regs. Edit to your needs.
 // !!*** Init Data ***!!
