@@ -1,0 +1,36 @@
+promptalias 'signWatch'
+promptalias 'houseRune'
+@clearjournal
+while @findobject 'signWatch'
+  clickobject 'signWatch'
+  waitforjournal 'This house is' 3000 'system'
+  // if @injournal 'greatly worn' 'system'
+  if @injournal 'in danger of collapsing' 'system'
+    snapshot
+    useskill 'hiding'
+    while findobject 'signWatch'
+      pause 25
+    endwhile
+  endif
+  pause 100
+endwhile
+if not @findalias 'signWatch' or not @findobject 'signWatch'
+  promptalias 'signWatch'
+endif
+if not @findalias 'houseRune' or not @findobject 'houseRune'
+  promptalias 'houseRune'
+endif
+createtimer 'clickTimer'
+settimer 'clickTimer' 4000
+createtimer 'alertCD'
+@clearjournal
+while @findobject 'signWatch'
+  if timer 'clickTimer' >= 3000
+    clickobject 'signWatch'
+    settimer 'clickTimer' 0
+    pause 200
+  endif
+  if hits < maxhits and timer 'alertCD' >= 1000
+    playsound 'hurt.wav'
+    settimer 'alertCD' 0
+  endif
